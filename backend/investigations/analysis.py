@@ -89,6 +89,8 @@ def validate_result(result, s):
             or not isinstance(observation.get("citation"), str)
             or (
                 observation["citation"] not in citations
+                or observation["citation"] not in evidence
+                or not isinstance(observation.get("quote"), str)
                 or evidence.get(observation["citation"]) != observation.get("quote")
             )
         ):

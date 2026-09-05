@@ -164,3 +164,16 @@ class InvestigationTests(TestCase):
         result["diagnosis"] = "dependency_timeout"
         accepted = validate_result(result, SCENARIOS[0])
         self.assertNotEqual(accepted["diagnosis"], SCENARIOS[0]["expected"])
+
+    def test_runbook_cannot_masquerade_as_event_with_null_quote(self):
+        for observation in [
+            {"citation": SCENARIOS[0]["runbook"]["id"]},
+            {"citation": SCENARIOS[0]["runbook"]["id"], "quote": None},
+        ]:
+            result = offline_analysis(SCENARIOS[0])
+            result["observations"] = [observation]
+            with (
+                self.subTest(observation=observation),
+                self.assertRaisesRegex(AnalysisError, "unsupported"),
+            ):
+                validate_result(result, SCENARIOS[0])
