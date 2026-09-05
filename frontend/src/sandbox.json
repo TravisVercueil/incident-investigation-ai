@@ -1,0 +1,295 @@
+{
+  "scenarios": [
+    {
+      "id": "backlog",
+      "title": "Webhook backlog",
+      "service": "delivery-worker",
+      "description": "Delivery latency rises after a worker deployment.",
+      "events": [
+        {
+          "id": "backlog-e1",
+          "time": "2026-08-12T09:00:00Z",
+          "level": "info",
+          "message": "Deployment d-104 reduced worker concurrency from 8 to 1."
+        },
+        {
+          "id": "backlog-e2",
+          "time": "2026-08-12T09:02:00Z",
+          "level": "warning",
+          "message": "Queue depth increased from 40 to 1800; incoming rate remained 60 events per minute."
+        },
+        {
+          "id": "backlog-e3",
+          "time": "2026-08-12T09:04:00Z",
+          "level": "warning",
+          "message": "Delivery p95 increased from 2 seconds to 95 seconds."
+        },
+        {
+          "id": "backlog-e4",
+          "time": "2026-08-12T09:06:00Z",
+          "level": "info",
+          "message": "Downstream endpoint success rate remained 99.9%; worker error count was 0."
+        }
+      ],
+      "runbook": {
+        "id": "backlog-r1",
+        "version": "1.0",
+        "title": "Queue saturation / v1.0",
+        "text": "Compare arrival rate, worker concurrency and processing duration. Check downstream failures before proposing capacity changes."
+      }
+    },
+    {
+      "id": "dependency",
+      "title": "Failing dependency",
+      "service": "checkout-api",
+      "description": "Checkout requests fail while a pricing dependency times out.",
+      "events": [
+        {
+          "id": "dependency-e1",
+          "time": "2026-08-12T09:00:00Z",
+          "level": "info",
+          "message": "Checkout release remained unchanged at d-88."
+        },
+        {
+          "id": "dependency-e2",
+          "time": "2026-08-12T09:02:00Z",
+          "level": "error",
+          "message": "Trace t-201: pricing-api timed out after 3000 ms; checkout returned 502."
+        },
+        {
+          "id": "dependency-e3",
+          "time": "2026-08-12T09:04:00Z",
+          "level": "error",
+          "message": "Trace t-202: pricing-api timed out after 3000 ms; checkout returned 502."
+        },
+        {
+          "id": "dependency-e4",
+          "time": "2026-08-12T09:06:00Z",
+          "level": "warning",
+          "message": "Pricing dependency timeout rate reached 38%; database latency remained 12 ms."
+        }
+      ],
+      "runbook": {
+        "id": "dependency-r1",
+        "version": "1.0",
+        "title": "Dependency timeout / v1.0",
+        "text": "Correlate failing traces with dependency timings. Check timeout rates and recent changes. Do not infer the dependency root cause from caller traces alone."
+      }
+    },
+    {
+      "id": "duplicate",
+      "title": "Duplicate delivery",
+      "service": "webhook-consumer",
+      "description": "A retried event creates a repeated downstream action.",
+      "events": [
+        {
+          "id": "duplicate-e1",
+          "time": "2026-08-12T09:00:00Z",
+          "level": "info",
+          "message": "Event evt-42 delivery attempt 1 committed action act-101."
+        },
+        {
+          "id": "duplicate-e2",
+          "time": "2026-08-12T09:02:00Z",
+          "level": "warning",
+          "message": "Acknowledgement for evt-42 attempt 1 timed out after commit."
+        },
+        {
+          "id": "duplicate-e3",
+          "time": "2026-08-12T09:04:00Z",
+          "level": "error",
+          "message": "Event evt-42 delivery attempt 2 committed action act-102."
+        },
+        {
+          "id": "duplicate-e4",
+          "time": "2026-08-12T09:06:00Z",
+          "level": "warning",
+          "message": "Consumer configuration: idempotency enforcement disabled."
+        }
+      ],
+      "runbook": {
+        "id": "duplicate-r1",
+        "version": "1.0",
+        "title": "Duplicate handling / v1.0",
+        "text": "Compare stable event IDs and committed action IDs across attempts. Confirm idempotency enforcement; preserve records for review."
+      }
+    },
+    {
+      "id": "inconclusive",
+      "title": "Insufficient evidence",
+      "service": "orders-api",
+      "description": "A latency alert arrives with a gap in trace collection.",
+      "events": [
+        {
+          "id": "inconclusive-e1",
+          "time": "2026-08-12T09:00:00Z",
+          "level": "warning",
+          "message": "Order latency p95 increased from 200 ms to 1700 ms."
+        },
+        {
+          "id": "inconclusive-e2",
+          "time": "2026-08-12T09:02:00Z",
+          "level": "warning",
+          "message": "Trace collection unavailable for the alert window."
+        },
+        {
+          "id": "inconclusive-e3",
+          "time": "2026-08-12T09:04:00Z",
+          "level": "info",
+          "message": "No deployment record is available for the alert window."
+        }
+      ],
+      "runbook": {
+        "id": "inconclusive-r1",
+        "version": "1.0",
+        "title": "Incomplete telemetry / v1.0",
+        "text": "State what is observed. List missing signals. Do not select a root cause without supporting evidence."
+      }
+    }
+  ],
+  "results": {
+    "backlog": {
+      "diagnosis": "worker_capacity",
+      "hypothesis": "Reduced concurrency may explain the backlog; verify processing duration before changing capacity.",
+      "citations": [
+        "backlog-e1",
+        "backlog-e2",
+        "backlog-e3",
+        "backlog-e4",
+        "backlog-r1"
+      ],
+      "observations": [
+        {
+          "citation": "backlog-e1",
+          "quote": "Deployment d-104 reduced worker concurrency from 8 to 1."
+        },
+        {
+          "citation": "backlog-e2",
+          "quote": "Queue depth increased from 40 to 1800; incoming rate remained 60 events per minute."
+        },
+        {
+          "citation": "backlog-e3",
+          "quote": "Delivery p95 increased from 2 seconds to 95 seconds."
+        },
+        {
+          "citation": "backlog-e4",
+          "quote": "Downstream endpoint success rate remained 99.9%; worker error count was 0."
+        }
+      ],
+      "missing_evidence": [
+        "Worker CPU and processing duration are not present.",
+        "A controlled concurrency restoration has not been observed."
+      ],
+      "next_steps": [
+        "Compare arrival rate, worker concurrency and processing duration. Check downstream failures before proposing capacity changes."
+      ],
+      "source": "Deterministic offline baseline"
+    },
+    "dependency": {
+      "diagnosis": "dependency_timeout",
+      "hypothesis": "Pricing timeouts may explain caller failures; the dependency root cause remains unknown.",
+      "citations": [
+        "dependency-e1",
+        "dependency-e2",
+        "dependency-e3",
+        "dependency-e4",
+        "dependency-r1"
+      ],
+      "observations": [
+        {
+          "citation": "dependency-e1",
+          "quote": "Checkout release remained unchanged at d-88."
+        },
+        {
+          "citation": "dependency-e2",
+          "quote": "Trace t-201: pricing-api timed out after 3000 ms; checkout returned 502."
+        },
+        {
+          "citation": "dependency-e3",
+          "quote": "Trace t-202: pricing-api timed out after 3000 ms; checkout returned 502."
+        },
+        {
+          "citation": "dependency-e4",
+          "quote": "Pricing dependency timeout rate reached 38%; database latency remained 12 ms."
+        }
+      ],
+      "missing_evidence": [
+        "Pricing service internals are unavailable.",
+        "The cause of the dependency timeout is not established."
+      ],
+      "next_steps": [
+        "Correlate failing traces with dependency timings. Check timeout rates and recent changes. Do not infer the dependency root cause from caller traces alone."
+      ],
+      "source": "Deterministic offline baseline"
+    },
+    "duplicate": {
+      "diagnosis": "missing_idempotency",
+      "hypothesis": "Retries without idempotency may explain the repeated action; the acknowledgement failure remains unexplained.",
+      "citations": [
+        "duplicate-e1",
+        "duplicate-e2",
+        "duplicate-e3",
+        "duplicate-e4",
+        "duplicate-r1"
+      ],
+      "observations": [
+        {
+          "citation": "duplicate-e1",
+          "quote": "Event evt-42 delivery attempt 1 committed action act-101."
+        },
+        {
+          "citation": "duplicate-e2",
+          "quote": "Acknowledgement for evt-42 attempt 1 timed out after commit."
+        },
+        {
+          "citation": "duplicate-e3",
+          "quote": "Event evt-42 delivery attempt 2 committed action act-102."
+        },
+        {
+          "citation": "duplicate-e4",
+          "quote": "Consumer configuration: idempotency enforcement disabled."
+        }
+      ],
+      "missing_evidence": [
+        "The acknowledgement network failure cause is unknown.",
+        "Other affected event IDs have not been checked."
+      ],
+      "next_steps": [
+        "Compare stable event IDs and committed action IDs across attempts. Confirm idempotency enforcement; preserve records for review."
+      ],
+      "source": "Deterministic offline baseline"
+    },
+    "inconclusive": {
+      "diagnosis": "inconclusive",
+      "hypothesis": "Evidence is insufficient to attribute a cause; collect request traces and dependency timings.",
+      "citations": [
+        "inconclusive-e1",
+        "inconclusive-e2",
+        "inconclusive-e3",
+        "inconclusive-r1"
+      ],
+      "observations": [
+        {
+          "citation": "inconclusive-e1",
+          "quote": "Order latency p95 increased from 200 ms to 1700 ms."
+        },
+        {
+          "citation": "inconclusive-e2",
+          "quote": "Trace collection unavailable for the alert window."
+        },
+        {
+          "citation": "inconclusive-e3",
+          "quote": "No deployment record is available for the alert window."
+        }
+      ],
+      "missing_evidence": [
+        "Request traces, dependency timings and deployment records are missing.",
+        "Collect these signals before attributing a cause."
+      ],
+      "next_steps": [
+        "State what is observed. List missing signals. Do not select a root cause without supporting evidence."
+      ],
+      "source": "Deterministic offline baseline"
+    }
+  }
+}
