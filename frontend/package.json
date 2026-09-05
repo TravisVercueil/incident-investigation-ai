@@ -9,6 +9,9 @@
     "preview": "vite preview --host 127.0.0.1 --port 5103 --strictPort"
   },
   "dependencies": {
+    "@primer/octicons-react": "19.33.0",
+    "@primer/primitives": "11.10.0",
+    "@primer/react": "38.38.0",
     "react": "19.2.0",
     "react-dom": "19.2.0"
   },

@@ -74,7 +74,7 @@ React + TypeScript UI
 | Decision                            | Reason and trade-off                                                                                                                                |
 | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Django without a REST framework     | Two endpoints, framework sessions, CSRF and ORM are sufficient.                                                                                     |
-| React + Vite, no UI library         | Small, accessible interaction surface without a large framework.                                                                                    |
+| React + Vite + Primer React         | Official GitHub Primer Product components, semantic dark-theme tokens and a compact investigation workbench.                                        |
 | Fixed scenario fixtures             | Repeatable failure investigation without unnecessary cloud infrastructure. No claim of live observability integration.                              |
 | Synchronous bounded model call      | Simple single-user demo. A job queue becomes useful with multi-user workloads or longer analysis.                                                   |
 | Exact quote and citation validation | Makes observations auditable. It does **not** establish that a hypothesis is correct or its citations are relevant. Human review remains necessary. |
@@ -115,3 +115,5 @@ Import this repository into Vercel with **Root Directory `frontend`**, install `
 - The public sandbox has no backend persistence, uploads, provider credentials or real AI execution. Full backend behavior is demonstrated locally.
 
 [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [MIT license](LICENSE)
+
+The interface follows [the documented design system and reference analysis](DESIGN.md). The source is available in [this repository](https://github.com/TravisVercueil/incident-investigation-ai).
