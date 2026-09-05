@@ -107,11 +107,9 @@ export default function App() {
         </span>
         <a
           className="repo-link"
-          href="https://github.com/TravisVercueil/incident-investigation-ai"
-          target="_blank"
-          rel="noreferrer"
+          href="mailto:travisvercueil@gmail.com?subject=Incident%20investigation%20source%20access"
         >
-          Source ↗
+          Source on request ↗
         </a>
       </header>
       {demoMode && (
