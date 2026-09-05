@@ -6,6 +6,8 @@ Investigate four reproducible synthetic incidents: a webhook backlog, a failing 
 
 ## Try it
 
+**[Open the live sandbox →](https://incident-investigation-ai.vercel.app)**
+
 The public interactive sandbox runs entirely in the browser. It uses bundled synthetic telemetry and precomputed deterministic baseline results, **not live AI calls**. It supports scenario selection, investigation briefs, event filtering, citation navigation and session history. The full local application adds a Django API, persisted investigations, PostgreSQL or SQLite and optional real OpenAI analysis.
 
 ### Local full application
