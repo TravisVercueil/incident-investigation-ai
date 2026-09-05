@@ -37,7 +37,7 @@ Open **http://127.0.0.1:5103**. Choose a scenario and click **Investigate scenar
 2. **Failing dependency:** inspect the two correlated timeout traces. The dependency's internal cause remains explicitly unknown.
 3. **Duplicate delivery:** compare event `evt-42` against two committed action IDs. The missing idempotency control explains a plausible failure path.
 4. **Insufficient evidence:** the baseline abstains. Notice the missing trace/deployment evidence rather than an invented diagnosis.
-5. Open a saved investigation in the sidebar. Refresh to verify session history persists. In the public sandbox, history lasts for the browser tab session.
+5. Open a saved investigation in Recent investigations below the workspace. Refresh to verify session history persists. In the public sandbox, history lasts for the browser tab session.
 
 ### PostgreSQL demo
 
