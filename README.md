@@ -37,7 +37,7 @@ Open **http://127.0.0.1:5103**. Choose a scenario and click **Investigate scenar
 2. **Failing dependency:** inspect the two correlated timeout traces. The dependency's internal cause remains explicitly unknown.
 3. **Duplicate delivery:** compare event `evt-42` against two committed action IDs. The missing idempotency control explains a plausible failure path.
 4. **Insufficient evidence:** the baseline abstains. Notice the missing trace/deployment evidence rather than an invented diagnosis.
-5. Open a saved investigation in the sidebar. Refresh to verify session history persists. In the public sandbox, history lasts for the browser tab session.
+5. Open a saved investigation in Recent investigations below the workspace. Refresh to verify session history persists. In the public sandbox, history lasts for the browser tab session.
 
 ### PostgreSQL demo
 
@@ -74,7 +74,7 @@ React + TypeScript UI
 | Decision                            | Reason and trade-off                                                                                                                                |
 | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Django without a REST framework     | Two endpoints, framework sessions, CSRF and ORM are sufficient.                                                                                     |
-| React + Vite, no UI library         | Small, accessible interaction surface without a large framework.                                                                                    |
+| React + Vite + Primer React         | Official GitHub Primer Product components, semantic dark-theme tokens and a compact investigation workbench.                                        |
 | Fixed scenario fixtures             | Repeatable failure investigation without unnecessary cloud infrastructure. No claim of live observability integration.                              |
 | Synchronous bounded model call      | Simple single-user demo. A job queue becomes useful with multi-user workloads or longer analysis.                                                   |
 | Exact quote and citation validation | Makes observations auditable. It does **not** establish that a hypothesis is correct or its citations are relevant. Human review remains necessary. |
@@ -115,3 +115,5 @@ Import this repository into Vercel with **Root Directory `frontend`**, install `
 - The public sandbox has no backend persistence, uploads, provider credentials or real AI execution. Full backend behavior is demonstrated locally.
 
 [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [MIT license](LICENSE)
+
+The interface follows [the documented design system and reference analysis](DESIGN.md). The source is available in [this repository](https://github.com/TravisVercueil/incident-investigation-ai).
